@@ -1,0 +1,31 @@
+{
+  "name": "fundamental",
+  "version": "1.0.0",
+  "description": "Node JS project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha test",
+    "dev": "nodemon ./index.js localhost 3000 --config nodemon.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/couchjanus/node-fundamental.git"
+  },
+  "keywords": [
+    "nodejs",
+    "js",
+    "javascript",
+    "express"
+  ],
+  "author": "Janus Nic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/couchjanus/node-fundamental/issues"
+  },
+  "homepage": "https://github.com/couchjanus/node-fundamental#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "nodemon": "^1.17.5"
+  }
+}
