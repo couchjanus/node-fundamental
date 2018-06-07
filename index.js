@@ -1,17 +1,12 @@
-// Загружаем модуль http
-const http = require('http');
+//
+// const server = require("./server/server1");
+// const server = require("./server/server2");
+// const server = require("./server/server3");
+const server = require("./server/server5");
 
-const hostname = '127.0.0.1';
-const port = 3000;
+let info = 'node-static-http-server by Janus Nic\n'
+         + 'Examples of HTTP static file serving in Node.js\n'
+         + 'See: https://github.com/couchjanus/node-fundamental\n';
 
-// Создаем web-сервер с обработчиком запросов
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World!\n');
-});
-
-// Запускаем web-сервер
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+server.boot();
+console.log(info);
