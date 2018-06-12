@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "mocha test",
-    "dev": "nodemon ./index.js localhost 3000 --config nodemon.json"
+    "dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,20 @@
   },
   "homepage": "https://github.com/couchjanus/node-fundamental#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "debug": "^3.1.0",
+    "dotenv": "^6.0.0",
     "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "app-root-path": "^2.0.1",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "pug": "^2.0.3",
+    "winston": "^2.4.2",
+    "winston-daily-rotate-file": "^3.2.1"
   }
 }
