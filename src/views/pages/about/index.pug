@@ -1,0 +1,45 @@
+extends ../../layouts/app
+block title
+    #{title}
+block content
+  section.section-padding
+    .container
+      .row
+        .header-section.text-center
+          h1!= title
+        hr.bottom-line
+        div!= message
+        - var x = 5;
+        div
+            ul
+                  - for (var i=1; i<=x; i++) {
+                      li Hello, world!
+                  - }
+        - var j = 5;
+        div
+            ul
+                - for (var i=1; i<=j; i++) {
+                    li= i + ". Hello Number World!"
+                - }
+
+        - var droids = ["R2D2", "C3PO", "BB8"];
+        div
+            h2 Famous Droids from Star Wars
+            for name in droids
+                div.card
+                    h3= name
+
+        - var profileName = "Danny Ocean";
+        div
+            p Hi there, #{profileName}. How are you doing?
+
+
+
+        mixin thumbnail(imageName, caption)
+            div.thumbnail
+                - var isrc = "/images/"+imageName+".jpg"; 
+                img(src=isrc)
+                h4.image-caption= caption
+
+        +thumbnail("cat", "Danny Ocean makes an elevator pitch.")
+        +thumbnail("cat", "Introducing Captain Jack Sparrow!")

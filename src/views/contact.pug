@@ -1,0 +1,41 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title!= title
+        //if IE
+            a(href='http://www.mozilla.com/en-US/firefox/') Get Firefox
+    body
+        ul.className#idName
+            li.class2Name
+                a(href='/') Home            
+            li.class2Name
+                a(href='/about', rel="nofollow") About
+            li.class2Name
+                a(href='/blog') Blog
+            li.class2Name.active
+                a(href='/contact') Contact            
+
+        h1!= message
+        p.class Текст абзаца с классом class
+        #id Блок div с идентификатором id
+
+        input(
+            type='checkbox'
+            name='agreement'
+            checked)
+        // этa строка закомментирована
+        a(style={color: 'red', background: 'black'}, href='/') Read more
+
+        div#foo(data-bar="foo")&attributes({'data-foo': 'bar'})
+            | Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum a sint iste autem aliquid dolorem neque magnam sapiente optio dolor obcaecati illum harum veritatis, cum in nulla animi illo vitae.
+        - var attributes = {'data-foo': 'bar'};
+        div#foom(data-bar="foo")&attributes(attributes)
+            | Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum a sint iste autem aliquid dolorem neque magnam sapiente optio dolor obcaecati illum harum veritatis, cum in nulla animi illo vitae.
+
+        //
+            это блочный комментарий
+            эта строка тоже закомментирована
+            code - этот код закомментирован
+
+

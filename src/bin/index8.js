@@ -28,7 +28,11 @@ module.exports = function () {
 
   app.locals.title = process.env.APP_NAME;
   app.locals.version = process.env.APP_VERSION;
- 
+
+  // Page Rendering
+  app.set('views', path.join(__dirname, '../views'));
+  app.set('view engine', 'pug');
+
   // Logger
   if (app.get('env') === 'development') {
     app.use(morgan('combined', { stream: logger.stream }));

@@ -1,4 +1,3 @@
-// 
 import express from 'express';
 const router = new express.Router();
 const path = require('path');
@@ -7,36 +6,18 @@ const path = require('path');
 //   res.send('Hello here Express...');
 // });
 
-router.get('/about', (req, res) => {
-  res.send('Now, I’ve noticed a tendency for this programme to get rather silly');
+router.get('/', (req, res) => {
+  res.render('index', { title: 'Hey Pug', message: 'Hello there Pug!'});
 });
 
-// define the blog page route
-router.get('/blog', (req, res) => {
-  res.send('Janus blog page');
+router.get('/about', (req, res) => {
+  res.render('about', { title: 'About Pug', message: 'Hello from About Page!',
+  tableCapture: 'Table Title'});
 });
+
 // define the contact route
 router.get('/contact', (req, res) => {
-  res.send('About page');
+  res.render('contact', { title: 'Contact Pug', message: 'Hello from Contact Page!'});
 });
-
-
-// router.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/../../public/index.html'));
-// });
-
-// router.get('/about', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/../../public/about.html'));
-// });
-
-// // define the blog page route
-// router.get('/blog', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/../../public/blog.html'));
-  
-// });
-// // define the contact route
-// router.get('/contact', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/../../public/contact.html'));
-// });
 
 module.exports = router;

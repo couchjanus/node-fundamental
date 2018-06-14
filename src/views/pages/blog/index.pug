@@ -1,0 +1,18 @@
+extends ../../layouts/app
+block title
+    #{title}
+block content
+    article
+        div.container
+            div.row
+                div(class="eight columns")
+                    div.content
+                        h2= title
+                        hr
+                        each val in posts
+                            - var ref = "blog/" + val.id
+                            h2
+                                a.alist(href=ref)= val.title
+                            p!= val.body
+                div(class="four columns")
+                    include ../../layouts/shared/aside        

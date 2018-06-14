@@ -1,0 +1,11 @@
+extends ../../layouts/app
+block title
+    #{title}
+block content
+  section.section-padding
+    .container
+      .row
+        .header-section.text-center
+          h1!= title
+        hr.bottom-line
+        div!= message
