@@ -2,10 +2,6 @@ import express from 'express';
 const router = new express.Router();
 const path = require('path');
 
-// router.get('/', (req, res) => {
-//   res.send('Hello here Express...');
-// });
-
 router.get('/', (req, res) => {
   res.render('index', { title: 'Hey Pug', message: 'Hello there Pug!'});
 });

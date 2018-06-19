@@ -1,0 +1,15 @@
+extends ../layouts/app
+block title
+    #{title}
+block content
+    article
+        div.container
+            div.row
+                div(class="eight columns")
+                    div.content
+                        h2= title
+                        hr
+                        h2= post.title
+                        p!= post.content
+                div(class="four columns")
+                    include ../layouts/shared/aside        

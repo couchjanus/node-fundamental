@@ -1,4 +1,4 @@
-extends ../../layouts/app
+extends ../layouts/app
 block title
     #{title}
 block content
@@ -10,9 +10,9 @@ block content
                         h2= title
                         hr
                         each val in posts
-                            - var ref = "blog/" + val.id
+                            - var ref = "blog/" + val._id
                             h2
                                 a.alist(href=ref)= val.title
-                            p!= val.body
+                            
                 div(class="four columns")
-                    include ../../layouts/shared/aside        
+                    include ../layouts/shared/aside        

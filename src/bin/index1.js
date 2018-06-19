@@ -6,6 +6,9 @@ const path = require('path');
 import routes from '../routes';
 import logger from '../utils';
 
+const MongoClient = require('mongodb').MongoClient;
+const dbhost = 'mongodb://localhost:27017/coolsite';
+
 /**
  * Initialize environment variables.
  */
@@ -32,6 +35,18 @@ module.exports = function () {
   // Page Rendering
   app.set('views', path.join(__dirname, '../views'));
   app.set('view engine', 'pug');
+
+  // Для подключения к серверу mongodb применяется метод connect():
+  MongoClient.connect(dbhost, (err, db) => {
+      if(err){
+          return console.log(err);
+      }
+      // взаимодействие с базой данных
+      console.log('Connected correctly to server.');
+      db.close();
+  });
+
+
 
   // Logger
   if (app.get('env') === 'development') {
