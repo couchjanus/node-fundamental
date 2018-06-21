@@ -2,6 +2,9 @@ import express from 'express';
 const morgan = require('morgan');
 import dotenv from 'dotenv';
 const path = require('path');
+const favicon = require('serve-favicon');
+
+import * as errorHandler from '../middlewares/errorHandler';
 
 import routes from '../routes';
 import logger from '../utils';
@@ -53,21 +56,17 @@ module.exports = function () {
   
   // Public directory
   app.use(express.static(path.join(__dirname, '../../public')));
+  
+  // app.use(favicon(path.join(__dirname, '../../public', 'favicon.ico')))
 
+  
   // Routing
   app.use('/', routes);
 
-  // Error handing
-  app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    // add this line to include winston logging
-    logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-  });
-  
+  app.use(errorHandler.bodyParser);
+  // Error Middlewares
+  app.use(errorHandler.genericErrorHandler);
+  app.use(errorHandler.methodNotAllowed);
+
   return app;
 };

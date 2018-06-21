@@ -1,33 +1,28 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
-let state = {
-  db: null,
-};
-const dbName = 'coolsite';
+import dotenv from 'dotenv';
 
-module.exports = {
+dotenv.config();
 
-  connect: (url, done) => {
-    if (state.db) return done();
+// mongoose.Promise = global.Promise;
 
-    MongoClient.connect(url, (err, client) => {
-      if (err) return done(err);
-      state.db = client.db(dbName);
-      done();
-    });
-  },
+const DB_CONNECTION = process.env.DB_CONNECTION || 'mongodb://localhost:27017';
 
-  get: () => {
-    return state.db;
-  },
+const DB_NAME = process.env.DB_NAME || 'coolsite';
 
-  close: (done) => {
-    if (state.db) {
-      state.db.close((err, result) => {
-        state.db = null;
-        state.mode = null;
-        done(err);
-      });
-    }
-  },
-};
+mongoose.connect(DB_CONNECTION + '/' + DB_NAME, 
+    (err) => {
+ 
+      if (err) throw err;
+    
+      console.log('Successfully connected');
+ 
+});
+
+
+// mongoose.connect(
+//   DB_CONNECTION + '/' + DB_NAME)
+//   .then(() => console.log('Mongooses connection succesful!'))
+//   .catch((err) => console.error(err));
+
+module.exports = mongoose;

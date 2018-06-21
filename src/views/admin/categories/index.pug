@@ -1,0 +1,41 @@
+extends ../../layouts/admin
+
+block content
+  .card.mb-3
+    .card-header
+      i.fa.fa-table
+      |  #{title}
+      a(href='/admin/category/create' class='float-right btn btn-success') Create new
+ 
+      .card-body
+        .table-responsive
+          table#dataTable.table.table-bordered(width='100%', cellspacing='0')
+            thead
+              tr
+                th #
+                th Name
+                th(colspan=2) Actions
+            tfoot
+              tr
+                th #
+                th Name
+                th(colspan=2) Actions
+
+            if categories.length > 0
+
+              tbody
+                - var i = 0
+                
+                each category in categories
+                  - i++
+                  tr
+                    td= i
+                    td= category.name
+                    td
+                      a(href='category/'+category._id+'/update' class="btn btn-warning") Edit
+                    td
+                      a(href='category/'+category._id+'/delete' class="btn btn-danger") Delete
+      .card-footer.small.text-muted
+        - var now = new Date(Date.now())
+        | Updated #{now}
+        

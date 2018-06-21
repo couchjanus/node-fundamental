@@ -2,12 +2,12 @@ import express from 'express';
 const morgan = require('morgan');
 import dotenv from 'dotenv';
 const path = require('path');
+const favicon = require('serve-favicon');
 
 import routes from '../routes';
 import logger from '../utils';
 
-const MongoClient = require('mongodb').MongoClient;
-const dbhost = 'mongodb://localhost:27017/coolsite';
+const db = require('../database/db');
 
 /**
  * Initialize environment variables.
@@ -37,16 +37,15 @@ module.exports = function () {
   app.set('view engine', 'pug');
 
   // Для подключения к серверу mongodb применяется метод connect():
-  MongoClient.connect(dbhost, (err, db) => {
-      if(err){
-          return console.log(err);
-      }
-      // взаимодействие с базой данных
-      console.log('Connected correctly to server.');
-      db.close();
+  
+  db.connect(`mongodb://localhost:27017`, (err) => {
+    if (err) {
+      console.log('Unable to connect to MongoDB.');
+      process.exit(1);
+    } else {
+      console.log('Connected to MongoDB Successful!');
+    }
   });
-
-
 
   // Logger
   if (app.get('env') === 'development') {
@@ -55,7 +54,10 @@ module.exports = function () {
   
   // Public directory
   app.use(express.static(path.join(__dirname, '../../public')));
+  
+  // app.use(favicon(path.join(__dirname, '../../public', 'favicon.ico')))
 
+  
   // Routing
   app.use('/', routes);
 
@@ -71,5 +73,9 @@ module.exports = function () {
     res.render('error');
   });
   
+  app.use(function(req, res, next) {
+    res.status(404).send('Sorry cant find that!');
+  });
+
   return app;
 };
