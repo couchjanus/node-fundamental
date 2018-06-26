@@ -1,26 +1,48 @@
 const models = require('../models');
+const async = require('async');
 
 module.exports = {
 
-  index: (req, res) => {
-    models.Post.all((err, docs) => {
-        res.render('blog/index', { 
-            title: 'Post List',
-            posts: docs 
-        });
+  index: (req, res, next) => {
+
+    models.Post.find()
+      .sort([['title', 'ascending']])
+      .exec((err, posts) => {
+        if (err) {
+          return next(err);
+          }
+
+        res.render('blog/index',
+          {
+            title: 'Posts List',
+            posts: posts,
+
+          });
     });
-    // res.render('blog/index', { title: 'Blog List', data: '' });
   },
 
   show: (req, res) => {
-
-    models.Post.detail(req.params.id, (err, docs) => {
-        res.render('blog/show', { 
-            title: 'Post Detail',
-            post: docs 
-        });
+    async.parallel({
+      post: (callback) => {
+        models.Post.findById(req.params.id)
+        .populate('category')
+        .populate('comments')
+        .exec(callback);
+      },
+    },
+      (err, results) => {
+        if (err) {
+            return next(err);
+        }
+        res.render('blog/show',
+            {
+              title: 'Post Detail',
+              post:  results.post,
+              comments:  results.comments,
+              csrf: req.csrfToken()
+            });
     });
-    // res.render('blog/show', { title: 'Show Blog', data: '' });
+
   },
-  
+
 }

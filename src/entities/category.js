@@ -6,11 +6,11 @@ const categorySchema = new mongoose.Schema(
     }
 );
 
-// categorySchema
-//   .virtual('url')
-//   .get( () => {
-//   return '/admin/category/'+this._id;
-// });
+categorySchema
+  .virtual('url')
+  .get( () => {
+  return '/admin/category/'+this._id;
+});
 
 const Category = mongoose.model('Category', categorySchema);
 

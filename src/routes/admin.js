@@ -14,4 +14,11 @@ router.post('/category/create', controllers.categories_controller.create_post);
 router.get('/category/:id/update', controllers.categories_controller.update_get);
 router.post('/category/:id/update', controllers.categories_controller.update_post);
 
+router.get('/posts', controllers.posts_controller.index);
+router.get('/post/create', controllers.posts_controller.create_get);
+router.post('/post/create', controllers.posts_controller.create_post);
+
+router.get('/post/:id/update', controllers.posts_controller.update_get);
+router.post('/post/:id/update', controllers.posts_controller.update_post);
+
 module.exports = router;

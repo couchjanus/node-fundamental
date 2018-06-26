@@ -1,1 +1,1 @@
-exports.blog_controller = require('./blog.controller');
+// exports.blog_controller = require('./blog.controller');
