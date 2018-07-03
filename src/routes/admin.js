@@ -21,4 +21,12 @@ router.post('/post/create', controllers.posts_controller.create_post);
 router.get('/post/:id/update', controllers.posts_controller.update_get);
 router.post('/post/:id/update', controllers.posts_controller.update_post);
 
+router.get('/users', controllers.users_controller.index);
+router.get('/user/create', controllers.users_controller.create_get);
+router.post('/user/create', controllers.users_controller.create_post);
+router.get('/user/:id/update', controllers.users_controller.update_get);
+router.post('/user/:id/update', controllers.users_controller.update_post);
+router.get('/user/:id/delete', controllers.users_controller.delete_get);
+router.post('/user/:id/delete', controllers.users_controller.delete_post);
+
 module.exports = router;

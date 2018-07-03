@@ -1,0 +1,25 @@
+extends ../layouts/auth
+
+block content
+  .container
+    .card.card-login.mx-auto.mt-5
+      .card-header
+        | Login
+      .card-body
+        form
+          input(type='hidden', name='csrf', value=csrftoken)
+          .form-group
+            label(for='email') Email address
+            input#email.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email' name="email")
+          .form-group
+            label(for='password') Password
+            input#password.form-control(type='password', placeholder='Password' name="password")
+          .form-group
+            .form-check
+              label.form-check-label
+                input.form-check-input(type='checkbox')
+                |                   Remember Password
+          a.btn.btn-primary.btn-block(href='/login') Login
+        .text-center
+          a.d-block.small.mt-3(href='/signup') Register an Account
+          a.d-block.small(href='/forgot-password') Forgot Password?

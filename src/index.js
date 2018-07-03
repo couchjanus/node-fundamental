@@ -1,9 +1,12 @@
-import server from './bin';
-const app = server();
+import app from './bin';
+import config from './config';
 
-app.listen(app.get('port'), app.get('host'), (err) => {
-  if (err) {
-    return console.log('something bad happened', err);
-  }
-  console.log(`Server started at http://${app.get('host')}:${app.get('port')}`);
-});
+if (!module.parent) {
+  // listen on port config.port
+  app.listen(config.port, (err) => {
+    if (err) {
+      return console.error('Something bad happened', err);
+    }
+    console.info(`Server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
+  });
+}

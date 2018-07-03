@@ -1,0 +1,57 @@
+extends ../../layouts/admin
+
+block content
+
+  section.section-padding
+      hr.bottom-line
+
+      if errors
+        ul
+         for error in errors
+           li!= error.msg
+
+      .card
+        .card-block
+          .card-header
+            i.fa.fa-users 
+            |  #{title}
+            a(href='/admin/users' class='m-auto float-right btn btn-info') Go Back
+          .card-body
+            .table-responsive
+              table#dataTable.table.table-bordered(width='100%', cellspacing='0')
+                form(method='POST' action='')
+                  input(type='hidden', name='_csrf', value=csrf)
+                  tbody
+                    tr.form-group
+                      td
+                        label(for='email') Email:
+                      td 
+                        input#email.form-control(type='email', placeholder='Users email' name='email' required='true' value=(undefined===user ? '' : user.email) )
+                    tr.form-group
+                      td
+                        label(for='password') User Password:
+                      td 
+                        input#password.form-control(type='password', placeholder='Users password' name='password' required='true' value=(undefined===user ? '' : user.password) )  
+                    tr.form-group
+                      td
+                        label isVerified:
+                      td 
+                        div(style='display: inline; padding-right:10px;') 
+                          input.checkbox-input(type='checkbox', name='isVerified', checked=(undefined===user ? '' : user.checked) )
+                    tr.form-group
+                      td
+                        label(for='firstName') First Name:
+                      td 
+                        input#firstName.form-control(type='text', placeholder='User name' name='firstName' value=(undefined===user ? '' : user.profile.firstName) )
+
+                    tr.form-group
+                      td
+                        label Role:
+                      td 
+                        - lists = ['user', 'manager', 'admin']
+                        select(name='roles', id="roles", class='custom-select')
+                          for list in lists
+                            option(value=list, selected =(undefined===user ? '' : (user.roles[0]===list)?  'selected':false))=list
+                    tr.form-group
+                      td(colspan=2)
+                         button.btn.btn-primary(type='submit') Submit

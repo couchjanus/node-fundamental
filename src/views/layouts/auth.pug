@@ -1,0 +1,25 @@
+doctype html
+html(lang='en')
+
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='')
+
+    title Login Template
+
+    include includes/css/core.pug
+
+    include includes/css/custom.pug
+
+  body.bg-dark
+    .content
+      .row
+        section.section-padding.flash
+          include ./shared/_flash
+
+    block content
+    
+    include includes/js/core.pug

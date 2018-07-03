@@ -14,13 +14,13 @@ create_get: (req, res, next) => {
     res.render('admin/categories/form', { title: 'Create Category', breadcrumb: 'Add New Category'});
 },
 
-  
+
 create_post: (req, res, next) => {
 
     req.checkBody('name', 'Category name required').notEmpty();
     req.sanitize('name').escape();
     req.sanitize('name').trim();
-           
+
     var errors = req.validationErrors();
 
     var category = new models.Category(
@@ -51,11 +51,8 @@ create_post: (req, res, next) => {
 },
 
 update_get: (req, res, next) => {
-    req.sanitize('id').escape();
-    req.sanitize('id').trim();
     models.Category.findById(req.params.id, (err, category) => {
         if (err) { return next(err); }
-
         res.render('admin/categories/form', { title: 'Update Category', breadcrumb: 'Edit Category', category: category });
     });
 
@@ -63,12 +60,9 @@ update_get: (req, res, next) => {
 
 
 update_post: (req, res, next) => {
-    req.sanitize('id').escape();
-    req.sanitize('id').trim();
     req.checkBody('name', 'Category name required').notEmpty();
     req.sanitize('name').escape();
     req.sanitize('name').trim();
-
     var errors = req.validationErrors();
     var category = new models.Category(
       {

@@ -1,28 +1,15 @@
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+import config from '../config';
 
-import dotenv from 'dotenv';
+// Подключимся к серверу MongoDB
 
-dotenv.config();
-
-// mongoose.Promise = global.Promise;
-
-const DB_CONNECTION = process.env.DB_CONNECTION || 'mongodb://localhost:27017';
-
-const DB_NAME = process.env.DB_NAME || 'coolsite';
-
-mongoose.connect(DB_CONNECTION + '/' + DB_NAME, 
-    (err) => {
- 
-      if (err) throw err;
-    
-      console.log('Successfully connected');
- 
-});
-
-
-// mongoose.connect(
-//   DB_CONNECTION + '/' + DB_NAME)
-//   .then(() => console.log('Mongooses connection succesful!'))
-//   .catch((err) => console.error(err));
+mongoose.connect(config.mongo.connection + '/' + config.mongo.dbase)
+  .then(() => {
+    console.info("Succesfully connected to MongoDB Database");
+  })
+  .catch((err) => {
+    throw new Error(`Error ${err}: unable to connect to database: ${config.mongo.dbase}`);
+  });
 
 module.exports = mongoose;

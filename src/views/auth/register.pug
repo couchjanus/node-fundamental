@@ -1,0 +1,33 @@
+extends ../layouts/auth
+
+block content
+  .container
+    .card.card-register.mx-auto.mt-5
+      .card-header
+        | Register an Account
+      .card-body
+        form
+          input(type='hidden', name='csrf', value=csrftoken)
+          .form-group
+            .form-row
+              .col-md-6
+                label(for='firstName') First name
+                input#firstName.form-control(type='text', aria-describedby='nameHelp', name="firstName" placeholder='Enter first name')
+              .col-md-6
+                label(for='lastName') Last name
+                input#lastName.form-control(type='text', aria-describedby='nameHelp', name="lastName" placeholder='Enter last name')
+          .form-group
+            label(for='email') Email address
+            input#email.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email' name="email")
+          .form-group
+            .form-row
+              .col-md-6
+                label(for='password') Password
+                input#password.form-control(type='password', placeholder='Password' name="password")
+              .col-md-6
+                label(for='confirmPassword') Confirm password
+                input#confirmPassword.form-control(type='password', placeholder='Confirm password' name="confirmPassword")
+          a.btn.btn-primary.btn-block(href='/signup') Register
+        .text-center
+          a.d-block.small.mt-3(href='/login') Login Page
+          a.d-block.small(href='/forgot-password') Forgot Password?
