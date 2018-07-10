@@ -1,8 +1,10 @@
 // const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const models = require('../entities');
+const shared = require('../helpers');
+
 // const moment = require('moment-timezone');
-// const config = require('../config');
+const config = require('../config');
 
 
 // var configAuth = require('./auth');
@@ -16,13 +18,11 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+        models.User.findById(id, function(err, user) {
         done(err, user);
         });
     });
 
-  
-   
     // login - имя стратегии, которое будет использоваться для идентификации этой стратегии
     // LocalStrategy(username-password) тип стратегии, которую вы хотите создать
     passport.use('login', new LocalStrategy({
@@ -36,165 +36,70 @@ module.exports = function(passport) {
         models.User.findOne({ 'email' :  email }, function(err, user) {
             if (err)
                 return done(err);
-            if (!user)
+            if (!user){
+                console.log('No user found.');
                 return done(null, false, req.flash('loginMessage', 'No user found.'));
-
+                
+            }
             // if the user is found but the password is wrong
-            if (!user.validPassword(password))
+            if (!user.validPassword(password)){
+                console.log('Oops! Wrong password.');
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+                
+            }
+            // Make sure the user has been verified
+            if (!user.isVerified) {
+                console.log('Your account has not been verified.');
+                return done(null, false, req.flash('loginMessage', 'Your account has not been verified.'));
+            }
+
             return done(null, user);
         });
 
     }));
 
+
     passport.use('signup', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
         passwordField : 'password',
-        passReqToCallback : true
+        passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, username, password, done) {
-        findOrCreateUser = function(){
-        // find a user in Mongo with provided username
-        User.findOne({'username':username},function(err, user) {
-            // In case of any error return
-            if (err){
-            console.log('Error in SignUp: '+err);
-            return done(err);
-            }
-            // already exists
-            if (user) {
-            console.log('User already exists');
-            return done(null, false, 
-                req.flash('message','User Already Exists'));
-            } else {
-            // if there is no user with that email
-            // create the user
-            let newUser = new User();
-            // set the user's local credentials
-            
-            // newUser.username = username;
-            newUser.password = createHash(password);
-            newUser.email = req.param('email');
-            newUser.profile.firstName = req.param('firstName');
-            newUser.profile.lastName = req.param('lastName');
-    
-            // save the user
-            newUser.save(function(err) {
-                if (err){
-                console.log('Error in Saving user: '+err);  
-                throw err;  
+
+        function(req, email, password, done) {
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            models.User.findOne({ 'email' :  email }, (err, user) => {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+                // check to see if theres already a user with that email
+                if (user) {
+                    return done(null, false, req.flash('errors', 'A user with that email address already exists.  Please try another email address.'));
+                } else {
+                    // if there is no user with that email
+                    // create the user
+                    let verificationToken = shared.createRandomToken();
+                    let user = new models.User();
+                    user.password = password;
+                    user.email = email;
+                    user.verificationToken = verificationToken;
+                    user.isVerified = false;
+                    user.profile.firstName = req.body.firstName;
+                    user.profile.lastName = req.body.lastName;
+                    // save the user
+                    user.save(function(err) {
+                        if (err){
+                            console.log(`There was the error: ${err} creating the user in the database.  Please try again.`);
+                            return done(null, false, req.flash('signupMessage', `There was the error: ${err} creating the user in the database.  Please try again.`));
+
+                        }
+                    // Send the email
+                    require('../helpers/mail')(req, user);
+                    });
+                    return done(null, user);
                 }
-                console.log('User Registration succesful');    
-                return done(null, newUser);
             });
-            }
-        });
-        };
-        
-        // Delay the execution of findOrCreateUser and execute 
-        // the method in the next tick of the event loop
-        process.nextTick(findOrCreateUser);
     }));
+
 }
-
-
-
-// passport.use('local-signup', new LocalStrategy({
-//     // by default, local strategy uses username and password, we will override with email
-//     usernameField : 'email',
-//     passwordField : 'password',
-//     passReqToCallback : true // allows us to pass back the entire request to the callback
-// },
-// function(req, email, password, done) {
-//     process.nextTick(function() {
-//      models.User.findOne({ 'email' :  email }, function(err, user) {
-//         if (err)
-//             return done(err);
-//         if (user) {
-//             return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-//         } else {
-//             let newUser            = new models.User();
-//             newUser.email    = email;
-//             newUser.profile.name   = req.body.name;
-//             newUser.password = newUser.generateHash(password);
-//             newUser.save(function(err) {
-//                 if (err)
-//                     throw err;
-//                 return done(null, newUser);
-//             });
-//         }
-
-//     });
-
-//     });
-
-// }));
-
-
-// function getGAvatar(emailAdr) {
-//    var mailToHash= crypto.createHash('md5').update(emailAdr).digest("hex");
-//    return "https://www.gravatar.com/avatar/" + mailToHash + "?s=400";
-// }
-
-
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-// const models = require('../entities');
-// const moment = require('moment-timezone');
-// const config = require('../config');
-
-
-
-// passport.use(new LocalStrategy({ usernameField: 'email' }, 
-// (email, password, done) => {
-// 	// проверка в mongo, существует ли пользователь с таким логином
-// 	models.User.findOne({ email: email }, (err, user) => {
-// 		if (!user) {
-// 			// Пользователь не существует, ошибка входа и перенаправление обратно
-// 			return done(null, false, { msg: 'No user with the email ' + email + ' was found.' });
-// 		}
-
-// 		if (!user.isVerified) {
-// 			return done(null, false, { msg: 'Your email has not been verified.  Check your inbox for a verification email.<p><a href="/auth/verify-resend/' + email + '" class="btn waves-effect white black-text"><i class="material-icons left">email</i>Re-send verification email</a></p>' });
-// 		}
-
-// 		if (user.isLocked) {
-// 			return user.incrementLoginAttempts((err) => {
-// 				if (err) {
-// 					return done(err);
-// 				}
-
-// 				return done(null, false, { msg: 'You have exceeded the maximum number of login attempts.  Your account is locked until ' + moment(user.lockUntil).tz(config.server.timezone).format('LT z') + '.  You may attempt to log in again after that time.' });
-// 			});
-// 		}
-
-// 		user.comparePassword(password, (err, isMatch) => {
-// 			if (isMatch) {
-// 				// Пользователь существует и пароль верен верно
-//         		// return метода done, что будет означать успешную аутентификацию
-// 				return done(null, user);
-// 			}
-// 			else {
-// 				user.incrementLoginAttempts((err) => {
-// 					if (err) {
-// 						return done(err);
-// 					}
-// 					// Пользователь существует, но пароль введен неверно
-// 					return done(null, false, { msg: 'Invalid password.  Please try again.' });
-// 				});
-// 			}
-// 		});
-// 	});
-// }));
-
-// // As with any middleware it is quintessential to call next()
-// // if the user is authenticated
-// exports.isAuthenticated = (req, res, next) => {
-// 	if (req.isAuthenticated()) {
-// 		return next();
-// 	}
-
-// 	req.flash('info', { msg: "You must be logged in to visit that page." });
-// 	res.redirect('/login');
-// };
-

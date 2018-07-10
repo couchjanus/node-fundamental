@@ -4,7 +4,7 @@ import config from '../config';
 
 // Подключимся к серверу MongoDB
 
-mongoose.connect(config.mongo.connection + '/' + config.mongo.dbase)
+mongoose.connect(config.mongo.connection + '/' + config.mongo.dbase, { useNewUrlParser: true })
   .then(() => {
     console.info("Succesfully connected to MongoDB Database");
   })

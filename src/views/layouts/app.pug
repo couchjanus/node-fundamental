@@ -10,7 +10,11 @@ html
             include ./shared/styles
     body
         block header
-            include ./shared/block-header        
+            include ./shared/block-header
+        .row
+            section.section-padding.flash
+                include ./shared/_flash
+        
         block content
         block footer
             include ./shared/block-footer        

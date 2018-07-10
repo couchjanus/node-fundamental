@@ -1,0 +1,13 @@
+extends ../layouts/app
+block title
+    #{title}
+block content
+    article
+        div.container
+            div.row
+                div(class="eight columns")
+                    div.content
+                        h2= title
+                        hr
+                        h2 Hello There! #{user.profile.firstName}
+

@@ -6,8 +6,8 @@ block content
       .card-header
         | Register an Account
       .card-body
-        form
-          input(type='hidden', name='csrf', value=csrftoken)
+        form(method="POST")
+          input(type='hidden', name='_csrf', value=csrftoken)
           .form-group
             .form-row
               .col-md-6
@@ -27,7 +27,7 @@ block content
               .col-md-6
                 label(for='confirmPassword') Confirm password
                 input#confirmPassword.form-control(type='password', placeholder='Confirm password' name="confirmPassword")
-          a.btn.btn-primary.btn-block(href='/signup') Register
+          input.btn.btn-primary.btn-block(type='submit' value='Register') 
         .text-center
           a.d-block.small.mt-3(href='/login') Login Page
           a.d-block.small(href='/forgot-password') Forgot Password?

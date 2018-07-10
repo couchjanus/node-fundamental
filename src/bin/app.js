@@ -67,8 +67,10 @@ app.use(function(req, res, next){
 app.use('/', routes);
 
 // Error Middlewares
-app.use(errorHandler.bodyParser);
-app.use(errorHandler.genericErrorHandler);
-app.use(errorHandler.methodNotAllowed);
-
+// app.use(errorHandler.bodyParser);
+// app.use(errorHandler.genericErrorHandler);
+// app.use(errorHandler.methodNotAllowed);
+process.on('warning', (warning) => {
+    console.log(warning.stack);
+});
 export default app;

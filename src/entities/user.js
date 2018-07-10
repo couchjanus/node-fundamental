@@ -11,13 +11,7 @@ const UserSchema = new mongoose.Schema(
         unique: true,
         required: true
   },
-
-  // username: {
-  //   type: String,
-  //   unique: true,
-  //   required: true
-  // },
-
+  
   password: {
         type: String,
         required: true
@@ -28,11 +22,11 @@ const UserSchema = new mongoose.Schema(
   //   default: '' 
   // },
 
-  // verificationToken: {
-  //   type: String,
-  //   // unique: true,
-  //   // required: true
-  // },
+  verificationToken: {
+    type: String,
+    unique: true,
+    required: true
+  },
 
   isVerified: {
     type: Boolean,
@@ -40,19 +34,19 @@ const UserSchema = new mongoose.Schema(
     default: false
   },
 
-  // passwordResetToken: {
-  //   type: String,
-  //   unique: true,
-  //   required: false,
-  // },
+  passwordResetToken: {
+    type: String,
+    unique: true,
+    required: false,
+  },
 
-  // passwordResetExpires: Date,
+  passwordResetExpires: Date,
 
-  // loginAttempts: {
-  //   type: Number,
-  //   required: true,
-  //   default: 0
-  // },
+  loginAttempts: {
+    type: Number,
+    required: true,
+    default: 0
+  },
 
   // lockUntil: Date,
 
@@ -65,11 +59,14 @@ const UserSchema = new mongoose.Schema(
       firstName: String,
       lastName:  String,
       gender:    String,
-      zipCode:   String
+      zipCode:   String,
+      
+      
   },
 
-  // socID: String
+  socID: String,
 
+  name:     String,
   }
 );
 
