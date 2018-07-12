@@ -1,6 +1,7 @@
 'use strict';
 
-const join = require('path').join;
+const path = require('path');
+// const join = require('path').join;
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
@@ -12,6 +13,7 @@ const flash = require('connect-flash');
 const csrf = require('csurf');
 
 const passport = require('passport');
+const multer = require('multer');
 
 const app = express();
 
@@ -25,7 +27,7 @@ import session from '../middlewares/session';
 import logger from '../utils';
 
 // Page Rendering
-app.set('views', join(__dirname, '../views'));
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
 // load the cookie-parsing middleware
@@ -41,14 +43,30 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+
+
+let storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+      callback(null, path.join(__dirname, '../../public/uploads'));
+    },
+    filename: function(req, file, callback) {
+      callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  });
+
+let upload = multer({ storage: storage });
+
+app.use(multer(upload).single('file'));
+
+
 // Logger
 if (app.get('env') === 'development') {
     app.use(morgan('combined', { stream: logger.stream }));
 }
 
 // Public directory
-app.use(express.static(join(__dirname, '../../public')));
-app.use(favicon(join(__dirname, '../../public', 'favicon.ico')));
+app.use(express.static(path.join(__dirname, '../../public')));
+app.use(favicon(path.join(__dirname, '../../public', 'favicon.ico')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

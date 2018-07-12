@@ -1,4 +1,4 @@
-const models = require('../models');
+const models = require('../entities');
 const async = require('async');
 
 module.exports = {
@@ -38,6 +38,7 @@ module.exports = {
             {
               title: 'Post Detail',
               post:  results.post,
+              user: req.user,
               comments:  results.comments,
               csrf: req.csrfToken()
             });

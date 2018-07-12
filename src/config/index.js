@@ -49,9 +49,7 @@ const config = {
   // smptPort: 587,
   // smtpUser: 'zb6vidra5zafwtea@ethereal.email',
   // smtpPass: '9rZTDxkZRvAeWZ9GWj',
-  
-
-  
+   
 
   maxAttempts: 3,// process.env.MAX_LOGIN_ATTEMPTS,
   lockoutHours: 60 * 60 * 1000, //process.env.LOGIN_ATTEMPTS_LOCKOUT_HOURS * 60 * 60 * 1000,

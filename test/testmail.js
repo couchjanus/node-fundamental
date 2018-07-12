@@ -48,5 +48,4 @@ nodemailer.createTestAccount((err, account) => {
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     });
 });
-
-
+    

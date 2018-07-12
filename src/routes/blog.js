@@ -1,25 +1,8 @@
 const router = require('express').Router();
+const controllers = require('../controllers');
 
-
-router.get('/', function(req, res) {
-    res.json('This is not implemented now');
-});
-
-router.post('/post', function(req, res) {
-    res.json('This is not implemented now');
-});
-   
-router.get('/post/:id', function(req, res) {
-    res.json('This is not implemented now');
-  });
-
-router.put('/post/:id', function (req, res){
-    res.json('This is not implemented now');
-});
-
-router.delete('/post/:id', function (req, res){
-    res.json('This is not implemented now');
-});
+router.get('/', controllers.blog_controller.index);
+router.post('/comment', controllers.comment_controller.comment_post);
+router.get('/:id', controllers.blog_controller.show);
 
 module.exports = router;
-

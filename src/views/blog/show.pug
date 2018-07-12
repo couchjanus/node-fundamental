@@ -11,5 +11,27 @@ block content
                         hr
                         h2= post.title
                         p!= post.content
+                        ul.nav.navbar-nav
+
+                        br
+                        if comments
+                            each comment in comments
+                                .col-sm-8
+                                    .panel.panel-white.post.panel-shadow
+                                        .post-heading
+                                            .pull-left.meta
+                                                h6.text-muted.time #{comment.create_at}
+
+                                        .post-description
+                                            p
+                                            | #{comment.content}
+                        hr
+                        if user
+                        block comment
+                            include ./comments/comment_form
+
                 div(class="four columns")
-                    include ../layouts/shared/aside        
+                    include ../layouts/shared/aside
+block scripts    
+    script(src='https://js.pusher.com/4.2/pusher.min.js')
+    script(src='/js/comment.js')        

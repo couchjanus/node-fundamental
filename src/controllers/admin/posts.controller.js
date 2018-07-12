@@ -33,6 +33,31 @@ index: awaitErorrHandlerFactory(async (req, res, next) => {
     });
 }),
 
+
+list: (req, res, next) => {
+
+    var perPage = 10;
+    var page = 1;
+  
+    models.Post
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, posts) {
+              models.Post.count().exec(function(err, count) {
+                  if (err) return next(err)
+                  res.render('admin/posts/list', {
+                      title: 'Posts List',
+                      breadcrumb: 'Posts List',
+                      posts: posts,
+                      current: page,
+                      pages: Math.ceil(count / perPage)
+                  });
+              });
+          });
+  },
+  
+
 // post_detail: async (req, res, next) => {
 //     const instance = await models.Post.findOne({
 //       where: { _id: req.params.id }
